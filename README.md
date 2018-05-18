@@ -1,10 +1,12 @@
 # makerequests.js
 A javascript library to generate requests on HTML elements with ```click()``` method defined. 
 
+![Example UI](/img/makerequests.png)
+
 ## What makerequests.js can do? ##
 
 * The interface let you choose the clickable object you want to make requests on or a ```random``` 
-selection between all clickable elements specified.  
+selection for each request made between all clickable elements specified.  
 
 * If you do not select any distribution you can specify a ```Number of requests``` to be generated all at once.
 If you select a distribution you have to provide parameters to determine how requests will be generated:
@@ -67,13 +69,18 @@ requests distribution over time.
 </body>
 ```
 
-* Add a tiny javascript snippet specifying class-names and distributions you want to enable. 
+* Add a tiny javascript snippet specifying:
+  * ```buttonClassName``` class name identifying clickable elements
+  * ```putMeHereClassName``` class name identifying the div container
+  * The distributions to be enabled (*default*: no distribution shown)
+  * Whether or not to visualize the graph of requests over time (*default*: graph not shown)
 
 ```javascript
 var makeRequests = new MakeRequests({
   buttonClassName: "button-class-name",
   putMeHereClassName: "putMeHere-class-name",
-  all: true});
+  all: true,
+  graph: true});
   
 makeRequests.build();
 ```
@@ -96,4 +103,5 @@ to selectively choose distributions to be enabled. ```opt-name``` of each distri
 * *plotly.js* version 1.37.0
 
 ### Versioning ###
-* ```1.0``` First stable version of the library. (*JSLint* compliant)
+* ```v1.0``` First stable version of the library (*JSLint* compliant)
+* ```v1.0.1``` Add opt for graph visualization

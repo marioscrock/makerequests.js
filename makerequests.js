@@ -29,6 +29,7 @@ function MakeRequests(opt) {
     uni = opt.uni || opt.all,
     linear = opt.linear || opt.all,
     step = opt.step || opt.all,
+    graph = opt.graph,
       
     //VARIABLES
     //Buttons to click
@@ -320,7 +321,9 @@ function MakeRequests(opt) {
     }
 
     //PLOT samples
-    plotSamples(samples, distribution);
+    if (graph) {
+      plotSamples(samples, distribution);
+    }
 
     if (parseInt(dataObj.buttonNum, 10) === buttons.length) {
       for (i = 0; i < samples.length; i += 1) {
