@@ -6,7 +6,7 @@ A javascript library to generate requests on HTML elements with ```click()``` me
 ## What makerequests.js can do? ##
 
 * The interface let you choose the clickable object you want to make requests on or a ```random``` 
-selection for each request made between all clickable elements specified.  
+selection, for each request made, between all clickable elements specified.  
 
 * The interface let you set a textual ```seed``` to initiate the random pseudo-generator
 
