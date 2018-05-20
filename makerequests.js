@@ -5,7 +5,6 @@
 // - bootstrap.js 4.0
 // - jquery.js 3.1.1
 // - jstat.js
-// - seedrandom.js 
 // - plotly.js
 
 /*global $, jQuery*/
@@ -566,7 +565,7 @@ function MakeRequests(opt) {
       //Random seed
       if (seed !== 0) {
         Math.seedrandom(seed);
-        document.getElementById('currentSeed').textContent = "Seed: " + seed;
+        document.getElementById('currentSeed').innerHTML = "Seed:<i>&nbsp" + seed + "</i>";
       }
       
     };
