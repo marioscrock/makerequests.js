@@ -8,6 +8,8 @@ A javascript library to generate requests on HTML elements with ```click()``` me
 * The interface let you choose the clickable object you want to make requests on or a ```random``` 
 selection for each request made between all clickable elements specified.  
 
+* The interface let you set a textual ```seed``` to initiate the random pseudo-generator
+
 * If you do not select any distribution you can specify a ```Number of requests``` to be generated all at once.
 If you select a distribution you have to provide parameters to determine how requests will be generated:
   * **Normal** (opt-name ```normal```)
@@ -101,7 +103,9 @@ to selectively choose distributions to be enabled. ```opt-name``` of each distri
 * *jquery.js* version 3.1.1
 * *jstat.js* version 1.7.1
 * *plotly.js* version 1.37.0
+* *seedrandom.js* version 2.4.3
 
 ### Versioning ###
 * ```v1.0``` First stable version of the library (*JSLint* compliant)
 * ```v1.0.1``` Add opt for graph visualization
+* ```v1.1``` Enable seed selection
