@@ -5,6 +5,7 @@
 // - bootstrap.js 4.0
 // - jquery.js 3.1.1
 // - jstat.js
+// - seedrandom.js 
 // - plotly.js
 
 /*global $, jQuery*/
@@ -40,6 +41,8 @@ function MakeRequests(opt) {
     row,
     //Row containing distribution buttons or form for selected distribution
     rowDistributions,
+    //Row containing seed form
+    rowSeed,
     //Button to fire requests
     firebtn,
     //Time Interval form-group HTML
@@ -67,6 +70,8 @@ function MakeRequests(opt) {
     fireFunction,
     //Return HTML for buttons related to distributions
     distributionButtonsHTML,
+    //Add main form HTML
+    buildMainForm,
       
     //Return HTML for form needed for the distribution specified
     showChoose,
@@ -347,7 +352,10 @@ function MakeRequests(opt) {
     btn.type = 'button';
     btn.className = 'btn btn-secondary choose-btn ml-2 mb-2';
     btn.textContent = 'Back';
-    btn.onclick = function () { distributionButtonsHTML(); };
+    btn.onclick = function () {
+      distributionButtonsHTML();
+      document.getElementById("numClickText").removeAttribute("disabled");
+    };
 
     rowDistributions.appendChild(btn);
 
@@ -430,6 +438,8 @@ function MakeRequests(opt) {
     var form = "<h5 class='col-md-3 col-sm-6 align-left'>Linear growth</h5><p class='info-distr'>'Number of requests' parameter determined automatically for 'Linear growth'</p><form class='form-inline col-md-12 col-sm-6 mt-2'><div class='form-group'><label for='slopeText'>Slope:&nbsp</label><input type='number' class='form-control mr-sm-2' id='slopeText' name='slope'/></div><div class='form-group'><label for='stepText'>Number of steps:&nbsp</label><input type='number' class='form-control mr-sm-2' id='stepText' name='step'/></div>" + timeInputHTML + "</form>";
 
     rowDistributions.innerHTML = form;
+    
+    document.getElementById("numClickText").setAttribute("disabled", "");
 
     firebtn.onclick = function () { fireFunction('linear'); };
 
@@ -441,6 +451,8 @@ function MakeRequests(opt) {
     var form = "<h5 class='col-md-3 col-sm-6 align-left'>Step function</h5><p class='info-distr'>'Number of requests' parameter determined automatically. 'Time interval' defines the entire duration. 'Number of steps' refers to a single repetition and it is rounded w.r.t the inserted 'Ratio'. </p><form class='form-inline col-md-12 col-sm-6 mt-2'><div class='form-group'><label for='lowText'>Low value:&nbsp</label><input type='number' class='form-control mr-sm-2' placeholder='0' id='lowText' name='lowValue'/></div><div class='form-group'><label for='highText'>High value:&nbsp</label><input type='number' class='form-control mr-sm-2' id='highText' name='highValue'/></div>" + timeInputHTML + "<div class='form-group mt-2'><label for='ratioText'>Ratio:&nbsp</label><input type='number' class='form-control mr-sm-2' placeholder='0 to 1 value' id='ratioText' placeholder='timeHigh/timeLow' name='ratio'/></div><div class='form-group mt-2'><label for='stepText'>Number of steps:&nbsp</label><input type='number' class='form-control mr-sm-2' id='stepText' name='step'/></div><div class='form-group mt-2'><label for='repetitionsText'>Repetitions:&nbsp</label><input type='number' class='form-control mr-sm-2' id='repetitionsText' name='rep'/></div></form>";
 
     rowDistributions.innerHTML = form;
+    
+    document.getElementById("numClickText").setAttribute("disabled", "");
 
     firebtn.onclick = function () { fireFunction('step'); };
 
@@ -496,29 +508,20 @@ function MakeRequests(opt) {
     }
 
   };
-   
-  //INITIALIZATION function
-  this.build = function () {
     
-    //Add CSS style
-    setCSS();
-    
-    //Retrieve array of elements to be clicked
-    buttons = document.getElementsByClassName(buttonName);
-    //Retrieve container where to append library-generated HTML
-    el = document.getElementsByClassName(putMeHere)[0];
+  buildMainForm = function () {
     
     //Generate HTML
     //FORM
     //- Number of Requests: number of requests to generate
     //- Selection button: button to click / click randomly through buttons
-    row = document.createElement('div');
-
-    el.innerHTML = '';
-    row.className = 'row';
+    //- Seed selection
     
     var form = document.createElement('form'),
+      formSeed = document.createElement('form'),
       formHTML,
+      formSeedHTML,
+      seedbtn,
       i;
     
     form.className = 'form-inline col-md-12 col-sm-6 mt-2';
@@ -543,6 +546,58 @@ function MakeRequests(opt) {
     form.appendChild(firebtn);
     row.appendChild(form);
     el.appendChild(row);
+    
+    //SEED form
+    
+    formSeed.className = 'form-inline col-md-12 col-sm-6 mt-2';
+    
+    formSeedHTML = "<div class='form-group'><label for='seedText'>Seed:&nbsp</label><input type='text' class='form-control mr-sm-2' id='seedText' name='seed'/></div><label id='currentSeed'><i>No seed currently set</i></label>";
+    
+    formSeed.innerHTML = formSeedHTML;
+    
+    seedbtn = document.createElement('button');
+    seedbtn.className = 'btn btn-info fire-btn ml-4';
+    seedbtn.type = 'button';
+    seedbtn.textContent = "Set seed";
+    
+    seedbtn.onclick = function () {
+      var seed = getDataObj().seed;
+      
+      //Random seed
+      if (seed !== 0) {
+        Math.seedrandom(seed);
+        document.getElementById('currentSeed').textContent = "Seed: " + seed;
+      }
+      
+    };
+    
+    formSeed.appendChild(seedbtn);
+    rowSeed.appendChild(formSeed);
+    
+  };
+   
+  //INITIALIZATION function
+  this.build = function () {
+    
+    //Add CSS style
+    setCSS();
+    
+    //Retrieve array of elements to be clicked
+    buttons = document.getElementsByClassName(buttonName);
+    //Retrieve container where to append library-generated HTML
+    el = document.getElementsByClassName(putMeHere)[0];
+    el.innerHTML = '';
+    
+    row = document.createElement('div');
+    row.className = 'row';
+    
+    rowSeed = document.createElement('div');
+    rowSeed.className = 'row';
+    
+    buildMainForm();
+    
+    el.appendChild(row);
+    el.appendChild(rowSeed);
     
     //HTML distributions buttons
     rowDistributions = document.createElement('div');
