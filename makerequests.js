@@ -29,7 +29,15 @@ function MakeRequests(opt) {
     uni = opt.uni || opt.all,
     linear = opt.linear || opt.all,
     step = opt.step || opt.all,
+    //True if you want plots
     graph = opt.graph,
+    //True if you want to generate a .go file to support 
+    //execution of requests 
+    generateGoFile = opt.generateGoFile,
+    //Map url-key:url
+    //If (generateGoFile) Each clickable object must have an attribute url-key, 
+    //a map between each url-key and the actual url must be provided to correctly generate .go file
+    mapUrl = opt.mapUrl,
       
     //VARIABLES
     //Buttons to click
@@ -71,6 +79,8 @@ function MakeRequests(opt) {
     distributionButtonsHTML,
     //Add main form HTML
     buildMainForm,
+    //Download file
+    downloadFile,
       
     //Return HTML for form needed for the distribution specified
     showChoose,
@@ -206,15 +216,30 @@ function MakeRequests(opt) {
 
 
     var dataObj = getDataObj(),
-      i = 0;
-
-    if (parseInt(dataObj.buttonNum, 10) === buttons.length) {
-      for (i = 0; i < dataObj.numClick; i = i + 1) {
-        randomClick();
-      }
+      i = 0,
+      goString,
+      samples,
+      numClick = dataObj.numClick;
+    
+    if (generateGoFile) {
+      //All together so all delays equal to 0
+      samples = [];
+      samples.length = numClick;
+      samples.fill(0);
+      
+      goString = "package main\n\nfunc main() {\n\ttimes := []float64{" +     samples.toString() + "}\n\tmakeRequests(times,\"" +
+        mapUrl[buttons[dataObj.buttonNum].getAttribute("url-key")] + "\")\n}";
+      
+      downloadFile('makeRequestsTimes.go', goString);
     } else {
-      for (i = 0; i < dataObj.numClick; i = i + 1) {
-        buttonClick(dataObj);
+      if (parseInt(dataObj.buttonNum, 10) === buttons.length) {
+        for (i = 0; i < numClick; i = i + 1) {
+          randomClick();
+        }
+      } else {
+        for (i = 0; i < numClick; i = i + 1) {
+          buttonClick(dataObj);
+        }
       }
     }
 
@@ -307,7 +332,8 @@ function MakeRequests(opt) {
       samples = generateSamples(distribution),
       init = 0,
       scale = 0,
-      i = 0;
+      i = 0,
+      goString;
 
     samples.sort(function (a, b) { return (a - b); });
 
@@ -328,15 +354,23 @@ function MakeRequests(opt) {
     if (graph) {
       plotSamples(samples, distribution);
     }
-
-    if (parseInt(dataObj.buttonNum, 10) === buttons.length) {
-      for (i = 0; i < samples.length; i += 1) {
-        setTimeout(randomClick, samples[i]);
-      }
+    
+    //Generate GO FILE
+    if (generateGoFile) {
+      goString = "package main\n\nfunc main() {\n\ttimes := []float64{" +     samples.toString() + "}\n\tmakeRequests(times,\"" +
+        mapUrl[buttons[dataObj.buttonNum].getAttribute("url-key")] + "\")\n}";
+      downloadFile('makeRequestsTimes.go', goString);
     } else {
-      for (i = 0; i < samples.length; i += 1) {
-        setTimeout(buttonClick(dataObj), samples[i]);
+      //OR CLICK
+      if (parseInt(dataObj.buttonNum, 10) === buttons.length) {
+        for (i = 0; i < samples.length; i += 1) {
+          setTimeout(randomClick(), samples[i]);
+        }
+      } else {
+        for (i = 0; i < samples.length; i += 1) {
+          setTimeout(buttonClick(dataObj), samples[i]);
 
+        }
       }
     }
 
@@ -531,7 +565,10 @@ function MakeRequests(opt) {
       formHTML += "<option value='" + i + "'>" + buttons[i].firstChild.nodeValue + "</option>";
     }
     
-    formHTML += "<option selected value='" + buttons.length + "'>Random</option>";
+    //No Random available if file must be generated
+    if (!generateGoFile) {
+      formHTML += "<option selected value='" + buttons.length + "'>Random</option>";
+    }
     form.innerHTML = formHTML + "</select></div></div>";
     
     firebtn = document.createElement('button');
@@ -572,6 +609,24 @@ function MakeRequests(opt) {
     
     formSeed.appendChild(seedbtn);
     rowSeed.appendChild(formSeed);
+    
+  };
+  
+  downloadFile = function (filename, text) {
+    
+    var pom = document.createElement('a'),
+      event;
+    
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+
+    if (document.createEvent) {
+      event = document.createEvent('MouseEvents');
+      event.initEvent('click', true, true);
+      pom.dispatchEvent(event);
+    } else {
+      pom.click();
+    }
     
   };
    
