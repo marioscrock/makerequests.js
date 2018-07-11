@@ -102,6 +102,17 @@ to selectively choose distributions to be enabled. ```opt-name``` of each distri
 
 ## Generate .go file ##
 
+Modern browsers allow only a limited set of concurrent requests, so if your clickable elements performs an HTTP request when clicked, you can exploit the ```generateGoFile``` option to generate a ```.go``` file that if run together with the ```makeRequests.go``` file provided generates a set of go-routines to execute the requests as specified through the graphical interface.
+
+To enable this option you need to:
+* set ```generateGoFile: true``` while creating ```MakeRequests``` variable
+* add to each clickable element an attribute ```url-key``` with value a unique string 
+* set ```mapUrl: {"url-key-1":"url1", "url-key-2":"url-2, ..}``` while creating ```MakeRequests``` variable providing for each ```url-key``` the ```url``` to perform the HTTP request
+	  
+**Note** In case ```generateGoFile: true``` *random* option is not enabled.
+
+When *Fire!* button is clicked a ```makeRequestsTimes.go``` is downloaded like the one here reported:
+
 ```go
 package main
 
@@ -110,6 +121,10 @@ func main() {
 	makeRequests(times,"http://example.url:8080/here?arg=value")
 }
 ``` 
+
+You can edit the ```makeRequests.go``` file provided to manage connections and set options for the HTTP request (e.g. headers). Then run the go-routines with command:
+
+```go run makeRequests.go makeRequestsTimes.go```
 
 ### Requirements ###
 * *bootstrap.js* version 4.0  
@@ -122,3 +137,4 @@ func main() {
 * ```v1.0``` First stable version of the library (*JSLint* compliant)
 * ```v1.0.1``` Add opt for graph visualization
 * ```v1.1``` Enable seed selection
+* ```v1.2``` generateGoFile option
