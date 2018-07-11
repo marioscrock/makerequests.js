@@ -94,7 +94,7 @@ makeRequests.build();
 ```javascript
 all:true
 ``` 
-enables all distributions, otherwise you can add to parameters
+The option above enables all distributions, otherwise you can add to parameters:
 ```javascript
 opt-name:true
 ```
