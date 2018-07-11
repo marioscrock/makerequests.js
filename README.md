@@ -76,13 +76,15 @@ requests distribution over time.
   * ```putMeHereClassName``` class name identifying the div container
   * The distributions to be enabled (*default*: no distribution shown)
   * Whether or not to visualize the graph of requests over time (*default*: graph not shown)
+  * Whether or not to generate a .go file instead of calling ```click()``` on clickable elements (*default*: ```click()``` performed). See [section below](#generate-go-file) on how to use this option.
 
 ```javascript
 var makeRequests = new MakeRequests({
   buttonClassName: "button-class-name",
   putMeHereClassName: "putMeHere-class-name",
   all: true,
-  graph: true});
+  graph: true,
+  generateGoFile: false});
   
 makeRequests.build();
 ```
@@ -97,6 +99,17 @@ enables all distributions, otherwise you can add to parameters
 opt-name:true
 ```
 to selectively choose distributions to be enabled. ```opt-name``` of each distribution is specified above.
+
+## Generate .go file ##
+
+```go
+package main
+
+func main() {
+	times := []float64{0,241.3264883321301, 9973.812807635615,10000}
+	makeRequests(times,"http://example.url:8080/here?arg=value")
+}
+``` 
 
 ### Requirements ###
 * *bootstrap.js* version 4.0  
