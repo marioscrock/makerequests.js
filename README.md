@@ -109,7 +109,9 @@ To enable this option you need to:
 * add to each clickable element an attribute ```url-key``` with value a unique string 
 * set ```mapUrl: {"url-key-1":"url1", "url-key-2":"url-2, ..}``` while creating ```MakeRequests``` variable providing for each ```url-key``` the ```url``` to perform the HTTP request
 	  
-**Note** In case ```generateGoFile: true``` *random* option is not enabled.
+**Note** In case ```generateGoFile: true```:
+* *random* option is not enabled.
+* a toggle is displayed to activate or deactivate the option.
 
 When *Fire!* button is clicked a ```makeRequestsTimes.go``` is downloaded like the one here reported:
 
@@ -125,8 +127,6 @@ func main() {
 You can edit the ```makeRequests.go``` file provided to manage connections and set options for the HTTP request (e.g. headers). Then put both files in the same folder and run the go-routines with command:
 
 ```go run makeRequests.go makeRequestsTimes.go```
-
-If ```generateGoFile: true``` also a toggle is displayed to activate or deactivate the option.
 
 **Note** It requires golang ```v1.10```
 
