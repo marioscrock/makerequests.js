@@ -244,6 +244,8 @@ function MakeRequests(opt) {
         }
       }
     }
+    
+    $(this).blur();
 
   };
 
@@ -575,7 +577,7 @@ function MakeRequests(opt) {
     form.innerHTML = formHTML + "</select></div></div>";
     
     firebtn = document.createElement('button');
-    firebtn.className = 'btn btn-info fire-btn ml-2';
+    firebtn.className = 'btn btn-info fire-btn ml-4';
     firebtn.type = 'button';
     firebtn.textContent = "Fire!";
     
@@ -583,10 +585,12 @@ function MakeRequests(opt) {
     firebtn.onclick = defaultFireFunction;
     
     //.go TOGGLE
-    goToggle = createGoToggle();
+    if (generateGoFile) {
+      goToggle = createGoToggle();
+      form.appendChild(goToggle);
+    }
     
     form.appendChild(firebtn);
-    form.appendChild(goToggle);
     row.appendChild(form);
     el.appendChild(row);
     
@@ -599,7 +603,7 @@ function MakeRequests(opt) {
     formSeed.innerHTML = formSeedHTML;
     
     seedbtn = document.createElement('button');
-    seedbtn.className = 'btn btn-info fire-btn ml-4';
+    seedbtn.className = 'btn btn-info fire-btn ml-2';
     seedbtn.type = 'button';
     seedbtn.textContent = "Set seed";
     
@@ -611,6 +615,8 @@ function MakeRequests(opt) {
         Math.seedrandom(seed);
         document.getElementById('currentSeed').innerHTML = "Seed:<i>&nbsp" + seed + "</i>";
       }
+      
+      $(this).blur();
       
     };
     
@@ -624,32 +630,28 @@ function MakeRequests(opt) {
     var goToggle,
       goToggle1,
       goToggle2;
-  
-    if (generateGoFile) {
       
-      goToggle = document.createElement('div');
-      goToggle.className = 'btn-group btn-group-toggle ml-2';
-      goToggle.setAttribute('data-toggle', 'buttons');
-      
-      goToggle1 = document.createElement('label');
-      goToggle1.className = 'btn btn-secondary active goToggleButton';
-      goToggle1.onclick = function () {
-        generateGoFile = true;
-      }
-      goToggle1.innerHTML = "<input type='radio' name='options' autocomplete='off'>.go"
-      
-      goToggle2 = document.createElement('label');
-      goToggle2.className = 'btn btn-secondary goToggleButton';
-      goToggle2.onclick = function () {
-        generateGoFile = false;
-      }
-      goToggle2.innerHTML = "<input type='radio' name='options' autocomplete='off'>click()</label>";
-      
-      goToggle.appendChild(goToggle1);
-      goToggle.appendChild(goToggle2);
-      
+    goToggle = document.createElement('div');
+    goToggle.className = 'btn-group btn-group-toggle';
+    goToggle.setAttribute('data-toggle', 'buttons');
+
+    goToggle1 = document.createElement('label');
+    goToggle1.className = 'btn btn-secondary active goToggleButton';
+    goToggle1.onclick = function () {
+      generateGoFile = true;
     }
-    
+    goToggle1.innerHTML = "<input type='radio' name='options' autocomplete='off'>.go"
+
+    goToggle2 = document.createElement('label');
+    goToggle2.className = 'btn btn-secondary goToggleButton';
+    goToggle2.onclick = function () {
+      generateGoFile = false;
+    }
+    goToggle2.innerHTML = "<input type='radio' name='options' autocomplete='off'>click()</label>";
+
+    goToggle.appendChild(goToggle1);
+    goToggle.appendChild(goToggle2);
+          
     return goToggle;
   } 
   

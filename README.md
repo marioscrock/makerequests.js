@@ -143,3 +143,4 @@ You can edit the ```makeRequests.go``` file provided to manage connections and s
 * ```v1.1``` Enable seed selection
 * ```v1.2``` generateGoFile option
 * ```v1.2.1``` Add toggle for generateGoFile option
+* ```v1.2.2``` Interface improvements
