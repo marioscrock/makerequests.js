@@ -122,11 +122,13 @@ func main() {
 }
 ``` 
 
-You can edit the ```makeRequests.go``` file provided to manage connections and set options for the HTTP request (e.g. headers). Then run the go-routines with command:
+You can edit the ```makeRequests.go``` file provided to manage connections and set options for the HTTP request (e.g. headers). Then put both files in the same folder and run the go-routines with command:
 
 ```go run makeRequests.go makeRequestsTimes.go```
 
 If ```generateGoFile: true``` also a toggle is displayed to activate or deactivate the option.
+
+**Note** It requires golang ```v1.10```
 
 ### Requirements ###
 * *bootstrap.js* version 4.0  
