@@ -126,6 +126,8 @@ You can edit the ```makeRequests.go``` file provided to manage connections and s
 
 ```go run makeRequests.go makeRequestsTimes.go```
 
+If ```generateGoFile: true``` also a toggle is displayed to activate or deactivate the option.
+
 ### Requirements ###
 * *bootstrap.js* version 4.0  
 * *jquery.js* version 3.1.1
@@ -138,3 +140,4 @@ You can edit the ```makeRequests.go``` file provided to manage connections and s
 * ```v1.0.1``` Add opt for graph visualization
 * ```v1.1``` Enable seed selection
 * ```v1.2``` generateGoFile option
+* ```v1.2.1``` Add toggle for generateGoFile option

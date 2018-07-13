@@ -81,6 +81,8 @@ function MakeRequests(opt) {
     buildMainForm,
     //Download file
     downloadFile,
+    //Create Go Toggle
+    createGoToggle,
       
     //Return HTML for form needed for the distribution specified
     showChoose,
@@ -116,7 +118,7 @@ function MakeRequests(opt) {
   setCSS = function () {
 
     var node = document.createElement('style');
-    node.innerHTML = ".putMeHere {background:#ffe6b3} .distr-button { background:#ffcc66; border-color:#ffaa00; } .distr-button:focus, .distr-button:hover { background:#ffc34d; border-color:#ffaa00; outline: none !important; box-shadow: none;} .fire-btn{background:#ffaa00; border-color:#e69900;} .fire-btn:focus, .fire-btn:hover {background:#e69900; border-color:#e69900; outline: none !important; box-shadow: none;} .align-left {text-align: left;} .info-distr{ color:red; margin-left: 15px; margin-right: 15px;} .choose-btn{ margin-left: 15px !important}";
+    node.innerHTML = ".putMeHere {background:#ffe6b3} .distr-button { background:#ffcc66; border-color:#ffaa00; } .distr-button:focus, .distr-button:hover { background:#ffc34d; border-color:#ffaa00; outline: none !important; box-shadow: none;} .fire-btn{background:#ffaa00; border-color:#e69900;} .fire-btn:focus, .fire-btn:hover {background:#e69900; border-color:#e69900; outline: none !important; box-shadow: none;} .align-left {text-align: left;} .info-distr{ color:red; margin-left: 15px; margin-right: 15px;} .choose-btn{ margin-left: 15px !important} .goToggleButton{ background:#ffc34d; border-color:#ffc34d}   .goToggleButton:not(:disabled):not(.disabled).active, .goToggleButton:not(:disabled):not(.disabled):active, .show>.goToggleButton.dropdown-toggle, .goToggleButton:focus, .goToggleButton:hover {background:#e69900;  border-color:#e69900; outline: none !important; box-shadow: none;}";
     document.body.appendChild(node);
 
   };
@@ -555,6 +557,7 @@ function MakeRequests(opt) {
       formHTML,
       formSeedHTML,
       seedbtn,
+      goToggle,
       i;
     
     form.className = 'form-inline col-md-12 col-sm-6 mt-2';
@@ -579,7 +582,11 @@ function MakeRequests(opt) {
     //As DEFAULT (no distribution selected) the Fire button fires all requests together
     firebtn.onclick = defaultFireFunction;
     
+    //.go TOGGLE
+    goToggle = createGoToggle();
+    
     form.appendChild(firebtn);
+    form.appendChild(goToggle);
     row.appendChild(form);
     el.appendChild(row);
     
@@ -611,6 +618,40 @@ function MakeRequests(opt) {
     rowSeed.appendChild(formSeed);
     
   };
+  
+  createGoToggle = function () {
+    
+    var goToggle,
+      goToggle1,
+      goToggle2;
+  
+    if (generateGoFile) {
+      
+      goToggle = document.createElement('div');
+      goToggle.className = 'btn-group btn-group-toggle ml-2';
+      goToggle.setAttribute('data-toggle', 'buttons');
+      
+      goToggle1 = document.createElement('label');
+      goToggle1.className = 'btn btn-secondary active goToggleButton';
+      goToggle1.onclick = function () {
+        generateGoFile = true;
+      }
+      goToggle1.innerHTML = "<input type='radio' name='options' autocomplete='off'>.go"
+      
+      goToggle2 = document.createElement('label');
+      goToggle2.className = 'btn btn-secondary goToggleButton';
+      goToggle2.onclick = function () {
+        generateGoFile = false;
+      }
+      goToggle2.innerHTML = "<input type='radio' name='options' autocomplete='off'>click()</label>";
+      
+      goToggle.appendChild(goToggle1);
+      goToggle.appendChild(goToggle2);
+      
+    }
+    
+    return goToggle;
+  } 
   
   downloadFile = function (filename, text) {
     
