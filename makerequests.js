@@ -368,12 +368,11 @@ function MakeRequests(opt) {
       //OR CLICK
       if (parseInt(dataObj.buttonNum, 10) === buttons.length) {
         for (i = 0; i < samples.length; i += 1) {
-          setTimeout(randomClick(), samples[i]);
+          setTimeout(randomClick, samples[i]);
         }
       } else {
         for (i = 0; i < samples.length; i += 1) {
-          setTimeout(buttonClick(dataObj), samples[i]);
-
+          setTimeout(buttonClick, samples[i], dataObj);
         }
       }
     }
